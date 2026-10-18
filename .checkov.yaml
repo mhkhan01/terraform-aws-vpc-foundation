@@ -1,0 +1,14 @@
+framework:
+  - terraform
+compact: true
+skip-check:
+  # KMS key policy: Resource "*" in a key policy means "this key only" and the root statement is required by AWS to keep the key manageable.
+  - CKV_AWS_109
+  # Same KMS key policy as above; the logs service statement is constrained by an ArnEquals encryption-context condition.
+  - CKV_AWS_111
+  # Same KMS key policy as above; resources cannot be narrower than "*" inside a key policy.
+  - CKV_AWS_356
+  # Module default and prod are 365 days; dev deliberately uses 30 days to limit storage cost.
+  - CKV_AWS_338
+  # AZ list is sliced to az_count (new AZs append, so selection is stable) and callers can pin exact zones via var.azs.
+  - CKV_AWS_394
